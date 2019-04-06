@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta http-equiv="X-UA-Compatible" content="ie=edge">
+      <link rel="shortcut icon" href="images/favicon.ico">
+      <title>Vue Pokedex</title>
+      <!-- CSS -->
+      <link rel="stylesheet" href="style.css">
+      <style>[v-cloak]{display:none}</style>
+   </head>
+   <body>
+      <header class="main-header">
+         Vue - Pokedex
+      </header>
+      <div id="app" class="main-content" v-cloak>
+        <!--3 (duda) Ponemos el vcloak para conseguir que no se vea el vdom de vue recargando. Esto requiere ocultarlo con un display none, por ejemplo.
+        ver estilo linea 11 -->
+         <aside class="pokedex-filters">
+             {{message + ' Que ase?'}}
+             <!-- 14 Vamos a hacer funcionar el formulario de búsqueda creando un evento en el input
+            Hay que hacer un doble data binding para que vaya en las dos direcciones
+            Por ello está el :value haciendo referencia al dato 
+            Además realizamos la asignación de los datos del evento sin necesidad de crear un método con $event
+            Cada vez que cambia me lo va a asignar a los datos. No se recomienda hacerlo así por mantener el html limpio-->
+             <div class="nice-input-wrapper">
+                 <!--15 <input @input="searchText = $event.target.value" :value="searchText" type="text" placeholder="Search by name" class="nice-input"> <span class="focus-border"><i></i></span></div> 
+                 Podemos usar también v-model para hacer el doble data binding-->
+                 <input v-model="searchText" type="text" placeholder="Search by name" class="nice-input"> <span class="focus-border"><i></i></span></div>
+            <p class="checkboxes-list-title">Type</p>
+            <div class="checkboxes-list">
+               <div class="md-checkbox"><input id="checkbox-grass" type="checkbox" value="grass"> <label for="checkbox-grass"><i class="material-icons" style="color: rgb(120, 200, 80);">lens</i> <span class="label-title">grass</span></label></div>
+               <div class="md-checkbox"><input id="checkbox-poison" type="checkbox" value="poison"> <label for="checkbox-poison"><i class="material-icons" style="color: rgb(160, 64, 160);">lens</i> <span class="label-title">poison</span></label></div>
+               <div class="md-checkbox"><input id="checkbox-fire" type="checkbox" value="fire"> <label for="checkbox-fire"><i class="material-icons" style="color: rgb(240, 128, 48);">lens</i> <span class="label-title">fire</span></label></div>
+               <div class="md-checkbox"><input id="checkbox-flying" type="checkbox" value="flying"> <label for="checkbox-flying"><i class="material-icons" style="color: rgb(168, 144, 240);">lens</i> <span class="label-title">flying</span></label></div>
+               <div class="md-checkbox"><input id="checkbox-water" type="checkbox" value="water"> <label for="checkbox-water"><i class="material-icons" style="color: rgb(104, 144, 240);">lens</i> <span class="label-title">water</span></label></div>
+               <div class="md-checkbox"><input id="checkbox-bug" type="checkbox" value="bug"> <label for="checkbox-bug"><i class="material-icons" style="color: rgb(168, 184, 32);">lens</i> <span class="label-title">bug</span></label></div>
+               <div class="md-checkbox"><input id="checkbox-normal" type="checkbox" value="normal"> <label for="checkbox-normal"><i class="material-icons" style="color: rgb(168, 168, 120);">lens</i> <span class="label-title">normal</span></label></div>
+               <div class="md-checkbox"><input id="checkbox-electric" type="checkbox" value="electric"> <label for="checkbox-electric"><i class="material-icons" style="color: rgb(248, 208, 48);">lens</i> <span class="label-title">electric</span></label></div>
+            </div>
+         </aside>
+         <main class="main-view">
+            <article class="pokemons-list">
+                <!--9 vamos a meter un for en los pokemons-->
+                <!--12 Agregamos una clave (key) para asociar de forma única a cada elemento, así aseguramos un renderizado sin errores-->
+               <div class="pokemon-card" v-for="pokemon in pokemons" :key="pokemon.id">
+                   <!--12 No usamos como key el index, porque va a cambiar cuando filtremos y se liaría la cosa-->
+                   <!--12 en este caso tenemos el id en los datos y no hay que crearlo, pero si no tenemos, se puede generar con un map o algo así.-->
+                    <!--11 Podemos sacar también el índice en el buble y jugar con él
+                         <div class="pokemon-card" v-for="(pokemon,index) in pokemons"> -->
+                   <!--Podemos usar también v-if, para que coja por ejemplo pares o impar con v-if="index % 2"
+                    Existe tb v-else, v-else-if...-->
+                  <div class="background-wrapper">
+                    <!--4 Según como hemos visto, podríamos hacerlo como aparece en la comentada abajo, pero se pude simplificar como a coninuación -->
+                    <!--10 Ahora vamos a iterar también para los que tienen varios tipos-->
+                    <!-- <div :style="'background-color: '+ TYPE_COLOR[pokemon.types[0]] +';'"></div> --> 
+                    <!-- <div :style="{'background-color': TYPE_COLOR[pokemon.types[0]]}"></div> -->
+                    <!--12 agregamos el key aquí tb porque hay un v-for-->
+                     <div v-for="type in pokemon.types" :key="type" :style="{'background-color': TYPE_COLOR[type]}"></div>
+                     
+                  </div>
+                  <!--13 Tenemos otra directiva para eventos v-on-->
+                  <!--Vamos a activar el botón del aspa de cada pokemon-->
+                  <!--Tenemos que crear el método en la sección methods del js
+                      Podemos ir a la documentación en event handlers para ver más ejemplos
+                      Hay incluso modificadores, por ejemplo, que surta efecto el clic pulsando la tecla alt-->
+                  <!-- Podemos también sustituir el v-on por @
+                  <span v-on:click="removePokemon(pokemon)" class="remove-pokemon"><i class="material-icons">close</i></span>  -->
+                  <span @click="removePokemon(pokemon)" class="remove-pokemon"><i class="material-icons">close</i></span> 
+                  <div class="image-wrapper">
+                      <!--2-->
+                      <img :src="pokemon.image" v-bind:alt="pokemon.name" class="pokemon-image"></div>
+                  <div class="pokemon-title">
+                     {{pokemon.name}}
+                  </div>
+               </div>
+               
+            </article>
+         </main>
+      </div>
+      <!--1 Comenzamos aquí
+        Importamos y nos vamos al main js
+        Podemos usar la versión minificada que lanza menos errores y carga más rápido.
+        Para ello, vamos a la url del cdn y en el destino, que aparecerá la versión actual, le agreamos el min y nos traemos todo aquí-->
+      <script src="http://unpkg.com/vue"></script>
+      <script src="main.js"></script>
+   </body>
+</html>
