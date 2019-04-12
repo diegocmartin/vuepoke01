@@ -54,7 +54,8 @@ const app = new Vue ({
         filteredPokemons(){
             return this.pokemons
                 .filter(pokemon => pokemon.name.includes(this.searchText));
-        }
+                
+        },
     },
 
     //13 Agregamos método de eliminar
@@ -63,7 +64,7 @@ const app = new Vue ({
             //const index =this.pokemons.findIndex(pokemon => pokemon.id === pokemonToRemove.id);
             //this.pokemons = this.pokemons.splice(index, 1);
             this.pokemons = this.pokemons
-                .filter(pokemon => pokemon !== pokemonToRemove)
+                .filter(pokemon => pokemon !== pokemonToRemove);
         },
         //14
  /*        setSearchText(event){
@@ -94,8 +95,8 @@ const app = new Vue ({
             //El this devuelve el this padre
             .then(pokemons => console.table(pokemons) || (this.pokemons=pokemons));
                 //console.table(pokemons);
-                //La línea anterior era para mostrar y ver que funciona.
-                //15 Aquí habría que agregar la carga de los pokemons foltrados
+                //El console es para mostrar y ver que funciona.
+                //15 Aquí habría que agregar la carga de los pokemons filtrados
                 
     },
 })

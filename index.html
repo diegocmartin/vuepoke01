@@ -18,16 +18,18 @@
         <!--3 (duda) Ponemos el vcloak para conseguir que no se vea el vdom de vue recargando. Esto requiere ocultarlo con un display none, por ejemplo.
         ver estilo linea 11 -->
          <aside class="pokedex-filters">
-             {{message + ' Que ase?'}}
-             <!-- 14 Vamos a hacer funcionar el formulario de búsqueda creando un evento en el input
+            {{message + ' Que ase?'}}
+            <!-- 14 Vamos a hacer funcionar el formulario de búsqueda creando un evento en el input
             Hay que hacer un doble data binding para que vaya en las dos direcciones
             Por ello está el :value haciendo referencia al dato 
             Además realizamos la asignación de los datos del evento sin necesidad de crear un método con $event
             Cada vez que cambia me lo va a asignar a los datos. No se recomienda hacerlo así por mantener el html limpio-->
-             <div class="nice-input-wrapper">
-                 <!--15 <input @input="searchText = $event.target.value" :value="searchText" type="text" placeholder="Search by name" class="nice-input"> <span class="focus-border"><i></i></span></div> 
-                 Podemos usar también v-model para hacer el doble data binding-->
-                 <input v-model="searchText" type="text" placeholder="Search by name" class="nice-input"> <span class="focus-border"><i></i></span></div>
+            <div class="nice-input-wrapper">
+               <!--15 <input @input="searchText = $event.target.value" :value="searchText" type="text" placeholder="Search by name" class="nice-input"> <span class="focus-border"><i></i></span></div> 
+               Podemos usar también v-model para hacer el doble data binding-->
+               <input v-model="searchText" type="text" placeholder="Search by name" class="nice-input"> 
+               <span class="focus-border"><i></i></span>
+            </div>
             <p class="checkboxes-list-title">Type</p>
             <div class="checkboxes-list">
                <div class="md-checkbox"><input id="checkbox-grass" type="checkbox" value="grass"> <label for="checkbox-grass"><i class="material-icons" style="color: rgb(120, 200, 80);">lens</i> <span class="label-title">grass</span></label></div>
