@@ -18,28 +18,41 @@
         <!--3 (duda) Ponemos el vcloak para conseguir que no se vea el vdom de vue recargando. Esto requiere ocultarlo con un display none, por ejemplo.
         ver estilo linea 11 -->
          <aside class="pokedex-filters">
-            {{message + ' Que ase?'}}
-            <!-- 14 Vamos a hacer funcionar el formulario de búsqueda creando un evento en el input
+             {{message + ' Que ase?'}}
+             <!-- 14 Vamos a hacer funcionar el formulario de búsqueda creando un evento en el input
             Hay que hacer un doble data binding para que vaya en las dos direcciones
             Por ello está el :value haciendo referencia al dato 
             Además realizamos la asignación de los datos del evento sin necesidad de crear un método con $event
             Cada vez que cambia me lo va a asignar a los datos. No se recomienda hacerlo así por mantener el html limpio-->
-            <div class="nice-input-wrapper">
-               <!--15 <input @input="searchText = $event.target.value" :value="searchText" type="text" placeholder="Search by name" class="nice-input"> <span class="focus-border"><i></i></span></div> 
-               Podemos usar también v-model para hacer el doble data binding-->
-               <input v-model="searchText" type="text" placeholder="Search by name" class="nice-input"> 
-               <span class="focus-border"><i></i></span>
-            </div>
+             <div class="nice-input-wrapper">
+                 <!--15 <input @input="searchText = $event.target.value" :value="searchText" type="text" placeholder="Search by name" class="nice-input"> <span class="focus-border"><i></i></span></div> 
+                 Podemos usar también v-model para hacer el doble data binding-->
+                 <input v-model="searchText" type="text" placeholder="Search by name" class="nice-input"> <span class="focus-border"><i></i></span></div>
             <p class="checkboxes-list-title">Type</p>
             <div class="checkboxes-list">
-               <div class="md-checkbox"><input id="checkbox-grass" type="checkbox" value="grass"> <label for="checkbox-grass"><i class="material-icons" style="color: rgb(120, 200, 80);">lens</i> <span class="label-title">grass</span></label></div>
-               <div class="md-checkbox"><input id="checkbox-poison" type="checkbox" value="poison"> <label for="checkbox-poison"><i class="material-icons" style="color: rgb(160, 64, 160);">lens</i> <span class="label-title">poison</span></label></div>
+            <!--18 Usa material design para estilar, por eso los prefijos md en ls estilos --> 
+            <!--18 Creamos un booblean filterByGrass para controlar cuando se chekea, bindeado con v-model --> 
+            <!--19 este método implica reclicar para todos con sus respectivos nombres de tipo, peor lo suyo es hacer un for -->
+            <!--19 Comentamos los demás y maquetamos el ´codigo del primero -->
+               <div class="md-checkbox" v-for="(color,type) in TYPE_COLOR" :key="type">
+                   <!--19 Debemos generalizar el id -->
+                   <!-- <input v-model="filterByGrass" :id="'checkbox-' +type" type="checkbox" value="grass">  -->
+                   <!--20 Cambiamos el filterByGrass por el nuevo array
+                          Vue reconoce que estamos haciendo esto sobre un array de tipo checkbox y nos recorre el asunto con el value -->
+                   <input v-model="selectedTypes" :value="type" :id="'checkbox-' +type" type="checkbox" value="grass"> 
+                   <label :for="'checkbox-' + type">
+                       <!--19 Debemos generalizar el color y el nombre del tipo -->
+                       <i class="material-icons" :style="{color}">lens</i> 
+                       <span class="label-title">{{ type }}</span>
+                    </label>
+                </div>
+               <!-- <div class="md-checkbox"><input id="checkbox-poison" type="checkbox" value="poison"> <label for="checkbox-poison"><i class="material-icons" style="color: rgb(160, 64, 160);">lens</i> <span class="label-title">poison</span></label></div>
                <div class="md-checkbox"><input id="checkbox-fire" type="checkbox" value="fire"> <label for="checkbox-fire"><i class="material-icons" style="color: rgb(240, 128, 48);">lens</i> <span class="label-title">fire</span></label></div>
                <div class="md-checkbox"><input id="checkbox-flying" type="checkbox" value="flying"> <label for="checkbox-flying"><i class="material-icons" style="color: rgb(168, 144, 240);">lens</i> <span class="label-title">flying</span></label></div>
                <div class="md-checkbox"><input id="checkbox-water" type="checkbox" value="water"> <label for="checkbox-water"><i class="material-icons" style="color: rgb(104, 144, 240);">lens</i> <span class="label-title">water</span></label></div>
                <div class="md-checkbox"><input id="checkbox-bug" type="checkbox" value="bug"> <label for="checkbox-bug"><i class="material-icons" style="color: rgb(168, 184, 32);">lens</i> <span class="label-title">bug</span></label></div>
                <div class="md-checkbox"><input id="checkbox-normal" type="checkbox" value="normal"> <label for="checkbox-normal"><i class="material-icons" style="color: rgb(168, 168, 120);">lens</i> <span class="label-title">normal</span></label></div>
-               <div class="md-checkbox"><input id="checkbox-electric" type="checkbox" value="electric"> <label for="checkbox-electric"><i class="material-icons" style="color: rgb(248, 208, 48);">lens</i> <span class="label-title">electric</span></label></div>
+               <div class="md-checkbox"><input id="checkbox-electric" type="checkbox" value="electric"> <label for="checkbox-electric"><i class="material-icons" style="color: rgb(248, 208, 48);">lens</i> <span class="label-title">electric</span></label></div> -->
             </div>
          </aside>
          <main class="main-view">
@@ -74,7 +87,10 @@
                       <!--2-->
                       <img :src="pokemon.image" v-bind:alt="pokemon.name" class="pokemon-image"></div>
                   <div class="pokemon-title">
-                     {{pokemon.name}}
+                    <!--17 no podemos meter cualquier función js aquí (línea anterior), si por ejemplo, queremos un log, debemos crear la función en la instancia, sección methods o arriba, como hemos hecho--> 
+                    {{ $log(pokemon.name) || pokemon.name}}
+                    <!--17 Parece curioso que la instrucción anterior lleva or en lugar de AND, que es lo que podríamos pensar. Se puede probar a cambiar --> 
+
                   </div>
                </div>
                

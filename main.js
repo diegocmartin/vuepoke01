@@ -1,3 +1,10 @@
+//17 vamos hacer que una función esté accesible para todo
+Vue.prototype.$log = function(message){
+    console.log(message);
+};
+
+
+
 const app = new Vue ({
     //Lo primero es "engancharnos" al HTML
     //Tras el header del index tenemos un div con id "app"
@@ -48,14 +55,36 @@ const app = new Vue ({
         filteredPokemons: [],
         //14 Vamos a hacer funcionar el formulario de búsqueda
         searchText:'',
+        //18 Creamos el control de los check boxes
+        //filterByGrass: false,
+        //20 Creamos un array para ir metiendo los tipos seleccionados
+        selectedTypes:[],
     },
-    //16 Para definir valores de la instancia coo un objeto en una propiedad computada
+    //16 Para definir valores de la instancia como un objeto en una propiedad computada
     computed:{
         filteredPokemons(){
             return this.pokemons
-                .filter(pokemon => pokemon.name.includes(this.searchText));
-                
-        },
+                .filter(pokemon => pokemon.name.includes(this.searchText))
+                //18 Agregaos el filtro para los checkbox
+                .filter(pokemon => {
+                    //20 comentamos: return this.filterByGrass ? pokemon.types.includes('grass') : true;
+                    //lo de abajo es lo mismo que línea anterior
+                    /* if (this.filterByGrass) {
+                        return pokemon.types.includes('grass');
+                    }
+                    else {
+                        return true;//un filter con un return true es que no filtra, saca todos
+                    } */
+                    //20
+                    if (!this.selectedTypes.length) return true;//Si vacío todos pasan
+                    let included= false;
+                    this.selectedTypes.forEach(type => {
+                        if(pokemon.types.includes(type)){
+                            included = true;
+                        }
+                    });
+                });
+        }
     },
 
     //13 Agregamos método de eliminar
@@ -95,8 +124,8 @@ const app = new Vue ({
             //El this devuelve el this padre
             .then(pokemons => console.table(pokemons) || (this.pokemons=pokemons));
                 //console.table(pokemons);
-                //El console es para mostrar y ver que funciona.
-                //15 Aquí habría que agregar la carga de los pokemons filtrados
+                //La línea anterior era para mostrar y ver que funciona.
+                //15 Aquí habría que agregar la carga de los pokemons foltrados
                 
     },
 })
