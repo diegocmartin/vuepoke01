@@ -52,7 +52,8 @@ const app = new Vue ({
         pokemons: [],
         //15
         //16 Esto es como una réplica de los pokemons, para eso tenemos las propiedades computadas, lo creamos en una nueva sección
-        filteredPokemons: [],
+        //18 Al crear la computada eliminamos este
+        //filteredPokemons: [],
         //14 Vamos a hacer funcionar el formulario de búsqueda
         searchText:'',
         //18 Creamos el control de los check boxes
